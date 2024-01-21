@@ -49,14 +49,17 @@ if (mat < 10512) {
                             if (mat == 10024) { // Modded Ores
                                 #ifdef GLOWING_ORE_MODDED
                                     vec3 avgBorderColor = vec3(0.0);
-                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x, absMidCoordPos.y)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2(-absMidCoordPos.x, absMidCoordPos.y)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x,-absMidCoordPos.y)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2(-absMidCoordPos.x,-absMidCoordPos.y)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2(0.00001, absMidCoordPos.y)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2(0.00001,-absMidCoordPos.y)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x, 0.00001)).rgb;
-                                    avgBorderColor += texture2D(tex, midCoord + vec2(-absMidCoordPos.x, 0.00001)).rgb;
+                                    const float insetFraction = 0.9999;
+                                    const float offsetFraction = 0.0001;
+
+                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x *insetFraction,  absMidCoordPos.y *insetFraction )).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2(-absMidCoordPos.x *insetFraction,  absMidCoordPos.y *insetFraction )).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x *insetFraction, -absMidCoordPos.y *insetFraction )).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2(-absMidCoordPos.x *insetFraction, -absMidCoordPos.y *insetFraction )).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x *offsetFraction, absMidCoordPos.y *insetFraction )).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x *offsetFraction,-absMidCoordPos.y *insetFraction )).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2( absMidCoordPos.x *insetFraction,  absMidCoordPos.y *offsetFraction)).rgb;
+                                    avgBorderColor += texture2D(tex, midCoord + vec2(-absMidCoordPos.x *insetFraction,  absMidCoordPos.y *offsetFraction)).rgb;
                                     avgBorderColor *= 0.125;
 
                                     vec3 colorDif = abs(avgBorderColor - color.rgb);
